@@ -6,11 +6,10 @@ import { ApiError } from "../utils/ApiError.js";
 import prisma from "../config/prisma.js";
 import type { AuthenticatedUser } from "../types/express.js";
 
-interface AuthenticatedRequest extends Request {
-  user: AuthenticatedUser;
-}
 
-export const verifyJWT = asyncHandler(async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+export const verifyJWT = asyncHandler(async (  req: Request,
+  res: Response,
+  next: NextFunction) => {
   const token =
     req.cookies?.accessToken ||
     req.headers.authorization?.replace("Bearer ", "");
