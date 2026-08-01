@@ -1,15 +1,13 @@
-import type { User, Role, Permission } from "../generated/prisma/client.js";
+import type { Role } from "../generated/prisma/client.js";
 
-export type RoleWithPermissions = Role & {
-  permissions: {
-    permission: Permission;
-  }[];
+export type AuthenticatedUser = {
+  id: string;
+  name: string;
+  email: string;
+  role: Role;
+  createdAt: Date;
+  updatedAt: Date;
 };
-
-export type AuthenticatedUser = Omit<User, "password" | "refreshToken"> & {
-  role: RoleWithPermissions;
-};
-
 
 declare global {
   namespace Express {
