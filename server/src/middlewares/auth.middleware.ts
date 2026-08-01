@@ -4,17 +4,10 @@ import type { Request, Response, NextFunction } from "express";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import prisma from "../config/prisma.js";
-import type { Role } from "../generated/prisma/client.js";
+import type { AuthenticatedUser } from "../types/express.js";
 
 interface AuthenticatedRequest extends Request {
-  user?: {
-    id: string;
-    name: string;
-    email: string;
-    role: Role;
-    createdAt: Date;
-    updatedAt: Date;
-  };
+  user: AuthenticatedUser;
 }
 
 export const verifyJWT = asyncHandler(async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
