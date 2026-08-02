@@ -24,6 +24,23 @@ This repository contains a full-stack admin dashboard for an e-commerce platform
 - Cloudinary
 - Bcrypt
 
+## Frontend and Backend URLs
+
+### Frontend app
+- https://e-commerce-admin-dashboard-front-end.onrender.com
+
+### Backend API
+- https://e-commerce-admin-dashboard-backend.onrender.com
+
+## Seeded Accounts
+### Super Admin
+- Email: `admin@trendsbird.test`
+- Password: `Admin@12345`
+
+### Catalog User
+- Email: `catalog@trendsbird.test`
+- Password: `Catalog@12345`
+
 ## Project Structure
 
 ```text
@@ -65,8 +82,26 @@ cd server
 npm install
 ```
 
+### API base path
+```text
+https://e-commerce-admin-dashboard-backend.onrender.com/api/v1
+```
+
+## Frontend Environment Variables
+Create a `.env` file inside the `client` folder for local development.
+
+```env
+VITE_API_BASE_URL=http://localhost:5000/api/v1
+```
+
+For Render deployment, set the same variable in the Render dashboard for the frontend service:
+
+```env
+VITE_API_BASE_URL=https://e-commerce-admin-dashboard-backend.onrender.com/api/v1
+```
+
 ## Backend Environment Variables
-Create a `.env` file inside the server folder.
+Create a `.env` file inside the `server` folder for local development.
 
 ```env
 PORT=5000
@@ -88,18 +123,48 @@ CLOUDINARY_API_KEY=your_api_key
 CLOUDINARY_API_SECRET=your_api_secret
 ```
 
+For Render deployment, use the production values in the Render dashboard, for example:
+
+```env
+NODE_ENV=production
+CORS_ORIGIN=https://e-commerce-admin-dashboard-front-end.onrender.com
+DATABASE_URL=postgresql://...
+ACCESS_TOKEN_SECRET=your_secure_secret
+REFRESH_TOKEN_SECRET=your_secure_secret
+```
+
 ## Backend Database Setup
 ```bash
 cd server
 npx prisma generate
 npx prisma migrate deploy
-npm run prisma:seed
+npx prisma db seed
 ```
 
-## Running the Project
+## Running the Project Locally
+
+### Backend
 ```bash
+cd server
+npm install
 npm run dev
 ```
+
+### Frontend
+```bash
+cd client
+npm install
+npm run dev
+```
+
+## Authentication
+The API uses JWT-based authentication with:
+- Access token in cookies or Bearer header
+- Refresh token rotation
+- Protected routes via `verifyJWT`
+- RBAC enforcement via `authorize`
+
+## Available Endpoints
 
 ## Authentication
 The API uses JWT-based authentication with:
@@ -209,15 +274,6 @@ The API uses JWT-based authentication with:
 - User deletion is implemented as a soft delete using the `deletedAt` field.
 - Other modules in this project currently use hard delete operations.
 
-## Seeded Accounts
-### Super Admin
-- Email: `admin@trendsbird.test`
-- Password: `Admin@12345`
-
-### Catalog User
-- Email: `catalog@trendsbird.test`
-- Password: `Catalog@12345`
-
 ## Module Status
 | Module | Status |
 |---|---|
@@ -232,7 +288,14 @@ The API uses JWT-based authentication with:
 | Brand | Complete |
 | Attribute | Complete |
 | Product | Complete |
-| Frontend | Partial |
+| Frontend | Complete |
+
+## Deployment Notes
+- Frontend should be deployed as a static app on Render or another host.
+- The frontend must have `VITE_API_BASE_URL` set to the backend URL.
+- The backend must use the deployed frontend origin in `CORS_ORIGIN`.
+- Do not commit real `.env` secrets to GitHub; configure them in the Render dashboard.
+- Ensure Prisma is seeded on the deployed database before login testing.
 
 ## Notes
 - The backend uses JWT-based authentication and permission-based authorization.
