@@ -6,8 +6,12 @@ import {
   setAccessToken,
 } from "../utils/token";
 
+const apiBaseUrl =
+  import.meta.env.VITE_API_BASE_URL ||
+  "https://e-commerce-admin-dashboard-backend.onrender.com/api/v1";
+
 const api = axios.create({
-  baseURL: "https://e-commerce-admin-dashboard-backend.onrender.com/api/v1",
+  baseURL: apiBaseUrl,
   withCredentials: true,
 });
 
@@ -37,7 +41,7 @@ api.interceptors.response.use(
 
         try {
           const response = await axios.post(
-            "http://localhost:5000/api/v1/auth/refresh-token",
+            `${apiBaseUrl}/auth/refresh-token`,
             {},
             {
               withCredentials: true,

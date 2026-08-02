@@ -193,11 +193,7 @@ export default function UserFormModal({
                 onChange={(e) =>
                   setForm({
                     ...form,
-                    gender: e.target.value as
-                      | "MALE"
-                      | "FEMALE"
-                      | "OTHER"
-                      | "",
+                    gender: e.target.value as "MALE" | "FEMALE" | "OTHER" | "",
                   })
                 }
                 className="w-full rounded-lg border border-slate-300 px-3 py-2"
