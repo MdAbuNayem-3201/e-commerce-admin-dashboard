@@ -41,7 +41,7 @@ This repository contains a full-stack admin dashboard for an e-commerce platform
 - Email: `catalog@trendsbird.test`
 - Password: `Catalog@12345`
 
-## Project Structure
+## Project Structure (Back-End)
 
 ```text
 Backend: 
