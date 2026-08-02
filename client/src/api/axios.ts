@@ -6,9 +6,11 @@ import {
   setAccessToken,
 } from "../utils/token";
 
-const apiBaseUrl =
+const BASE_URL =
   import.meta.env.VITE_API_BASE_URL ||
-  "https://e-commerce-admin-dashboard-backend.onrender.com/api/v1";
+  "https://e-commerce-admin-dashboard-backend.onrender.com";
+
+const apiBaseUrl = `${BASE_URL}/api/v1`;
 
 const api = axios.create({
   baseURL: apiBaseUrl,
@@ -33,7 +35,11 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    if (
+      error.response?.status === 401 &&
+      originalRequest &&
+      !originalRequest._retry
+    ) {
       originalRequest._retry = true;
 
       if (!isRefreshing) {
@@ -45,28 +51,30 @@ api.interceptors.response.use(
             {},
             {
               withCredentials: true,
-            },
+            }
           );
 
-          const token = response.data.data.accessToken;
+          const accessToken = response.data.data.accessToken;
 
-          setAccessToken(token);
+          setAccessToken(accessToken);
 
-          isRefreshing = false;
-
-          originalRequest.headers.Authorization = `Bearer ${token}`;
+          originalRequest.headers.Authorization = `Bearer ${accessToken}`;
 
           return api(originalRequest);
-        } catch {
+        } catch (err) {
           removeAccessToken();
 
           window.location.href = "/login";
+
+          return Promise.reject(err);
+        } finally {
+          isRefreshing = false;
         }
       }
     }
 
     return Promise.reject(error);
-  },
+  }
 );
 
 export default api;
