@@ -32,7 +32,7 @@ export default function Sidebar({ permissions }: Props) {
             TB
           </div>
           <div>
-            <h1 className="text-lg font-semibold">Trends Bird</h1>
+            <h1 className="text-lg font-semibold">Buy with Me</h1>
             <p className="text-sm text-slate-300">Admin Center</p>
           </div>
         </div>
